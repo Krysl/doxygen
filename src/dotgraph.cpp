@@ -291,7 +291,13 @@ void DotGraph::writeGraphHeader(TextStream &t,const QCString &title)
     t << " // INTERACTIVE_SVG=YES\n";
   }
   t << " // LATEX_PDF_SIZE\n"; // write placeholder for LaTeX PDF bounding box size replacement
-  t << "  bgcolor=\"transparent\";\n";
+  const StringVector &dotGraphAttrs = Config_getList(DOT_GRAPH_ATTR);
+  if (!dotGraphAttrs.empty()) {
+    for (const auto &attr : dotGraphAttrs)
+    {
+      t << "  " << attr << ";\n";
+    }
+  }
   QCString c = Config_getString(DOT_COMMON_ATTR);
   if (!c.isEmpty()) c += ",";
   t << "  edge [" << c << Config_getString(DOT_EDGE_ATTR) << "];\n";
